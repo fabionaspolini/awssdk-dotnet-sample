@@ -22,9 +22,9 @@ while (true)
             $"| {fleet.Name,-30} " +
             $"| {fleet.ComputeCapacityStatus.InUse,10} " +
             $"| {fleet.ComputeCapacityStatus.Available,10} " +
-            $"| {fleet.ComputeCapacityStatus.Desired - fleet.ComputeCapacityStatus.Available,10} " +
+            $"| {fleet.ComputeCapacityStatus.Desired - fleet.ComputeCapacityStatus.Available,10} " + // Pending
             $"| {fleet.ComputeCapacityStatus.Desired,10} " +
-            $"| {fleet.ComputeCapacityStatus.Running,10} |");
+            $"| {fleet.ComputeCapacityStatus.Running,10} |"); // ActualCapacity
     }
     Thread.Sleep(2000);
 }
