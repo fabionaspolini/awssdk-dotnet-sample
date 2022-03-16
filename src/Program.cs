@@ -9,17 +9,24 @@ WriteLine(".:: AWS SDK ::.");
 //     WriteLine($"{item.BucketName}");
 
 var appStreamclient = new Amazon.AppStream.AmazonAppStreamClient();
-var fleets = await appStreamclient.DescribeFleetsAsync(new());
 
-WriteLine($"| {"Name",-30} | {"InUse",10} | {"Available",10} | {"Desired",10} | {"Running",10} |");
-foreach (var fleet in fleets.Fleets)
+while (true)
 {
-    WriteLine(
-        $"| {fleet.Name,-30} " +
-        $"| {fleet.ComputeCapacityStatus.InUse,10} " +
-        $"| {fleet.ComputeCapacityStatus.Available,10} " +
-        $"| {fleet.ComputeCapacityStatus.Desired,10} " +
-        $"| {fleet.ComputeCapacityStatus.Running,10} |");
+    Clear();
+    WriteLine(DateTime.Now);
+    var fleets = await appStreamclient.DescribeFleetsAsync(new());
+    WriteLine($"| {"Name",-30} | {"InUse",10} | {"Available",10} | {"Pending",10} | {"Desired",10} | {"Running",10} |");
+    foreach (var fleet in fleets.Fleets)
+    {
+        WriteLine(
+            $"| {fleet.Name,-30} " +
+            $"| {fleet.ComputeCapacityStatus.InUse,10} " +
+            $"| {fleet.ComputeCapacityStatus.Available,10} " +
+            $"| {fleet.ComputeCapacityStatus.Desired - fleet.ComputeCapacityStatus.Available,10} " +
+            $"| {fleet.ComputeCapacityStatus.Desired,10} " +
+            $"| {fleet.ComputeCapacityStatus.Running,10} |");
+    }
+    Thread.Sleep(2000);
 }
 
 WriteLine("Fim");
